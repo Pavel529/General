@@ -1,0 +1,541 @@
+{
+	"info": {
+		"_postman_id": "9f87b6f7-350d-437c-b6e8-4dc18278ac5d",
+		"name": "group_24_HW_3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15380314"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"token\", \"/s34lfgbj/pavel/jjd909/17907kjkWpqc5074pasha203376evny\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "pavel",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "pasha",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/login",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "pavel",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "pasha",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user_info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"var req = JSON.parse(pm.request.body.raw);\r",
+							"\r",
+							"var schem = {\r",
+							"    \"person\": {\r",
+							"        \"u_age\": 29,\r",
+							"        \"u_name\": [\r",
+							"            \"pavel\",\r",
+							"            500,\r",
+							"            29\r",
+							"        ],\r",
+							"        \"u_salary_1_5_year\": 2000\r",
+							"    },\r",
+							"    \"qa_salary_after_12_months\": 1450.0,\r",
+							"    \"qa_salary_after_6_months\": 1000,\r",
+							"    \"start_qa_salary\": 500\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Test json structure\", function () {\r",
+							"    pm.expect(tv4.validate(jsonData, schem)).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test start_qa_salary\", function () {\r",
+							"    pm.expect(jsonData.start_qa_salary).to.eql(req.salary);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test qa_salary_after_6_months\", function () {\r",
+							"    pm.expect(jsonData.qa_salary_after_6_months).to.eql(req.salary*2);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test qa_salary_after_12_months\", function () {\r",
+							"    pm.expect(jsonData.qa_salary_after_12_months).to.eql(req.salary*2.9);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test u_salary_1_5_year\", function () {\r",
+							"    pm.expect(jsonData.person.u_salary_1_5_year).to.eql(req.salary*4);\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"u_salary_1_5_year\", jsonData.person.u_salary_1_5_year);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"age\": 29,\r\n    \"salary\": 500,\r\n    \"name\": \"pavel\",\r\n    \"auth_token\": \"{{token}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/user_info",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"user_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "new_data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"var req = request.data;\r",
+							"var schem = {\r",
+							"    \"age\": 29,\r",
+							"    \"name\": \"pavel\",\r",
+							"    \"salary\": [\r",
+							"        500,\r",
+							"        \"1000\",\r",
+							"        \"1500\"\r",
+							"    ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Test json structure\", function () {\r",
+							"    pm.expect(tv4.validate(jsonData, schem)).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test salary_0\", function () {\r",
+							"    pm.expect(jsonData.salary[0]).to.eql(+req.salary);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test salary_1\", function () {\r",
+							"    pm.expect(jsonData.salary[1]).to.eql(String(req.salary*2));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test salary_2\", function () {\r",
+							"    pm.expect(jsonData.salary[2]).to.eql(String(req.salary*3));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your check most_1\", function () {\r",
+							"    pm.expect(Number(jsonData.salary[2])).to.be.above(Number(jsonData.salary[0]));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your check most_2\", function () {\r",
+							"    pm.expect(Number(jsonData.salary[2])).to.be.above(Number(jsonData.salary[0]));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "29",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "500",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "pavel",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/new_data",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"new_data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test_pet_info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"var response = {\r",
+							"    \"age\": 29,\r",
+							"    \"daily_food\": 0.936,\r",
+							"    \"daily_sleep\": 195.0,\r",
+							"    \"name\": \"pavel\"\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Test json structure\", function () {\r",
+							"    pm.expect(tv4.validate(jsonData, response)).to.be.true;\r",
+							"});\r",
+							"\r",
+							"var req = request.data;\r",
+							"\r",
+							"pm.test(\"Test check weight\", function () {\r",
+							"    pm.expect(jsonData.daily_food).to.eql(req.weight*0.012);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Test check weight\", function () {\r",
+							"    pm.expect(jsonData.daily_sleep).to.eql(req.weight*2.5);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "weight",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "tucha",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/test_pet_info",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"test_pet_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_test_user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var req = request.data;\r",
+							"\r",
+							"    var response = {\r",
+							"    \"age\": \"29\",\r",
+							"    \"family\": {\r",
+							"        \"children\": [\r",
+							"            [\r",
+							"                \"Alex\",\r",
+							"                24\r",
+							"            ],\r",
+							"            [\r",
+							"                \"Kate\",\r",
+							"                12\r",
+							"            ]\r",
+							"        ],\r",
+							"        \"u_salary_1_5_year\": 8000\r",
+							"    },\r",
+							"    \"name\": \"pavel\",\r",
+							"    \"salary\": 2000\r",
+							"} \r",
+							"\r",
+							"pm.test(\"Test json structure\", function () {\r",
+							"    pm.expect(tv4.validate(jsonData, response)).to.be.true;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Test check name\", function () {\r",
+							"    pm.expect(jsonData.name).to.eql(environment.name);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Test check age\", function () {\r",
+							"    pm.expect(jsonData.age).to.eql(req.age);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "29",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "{{u_salary_1_5_year}}",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "pavel",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/get_test_user",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"get_test_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "currency",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"var index = Math.trunc(Math.random() * jsonData.length);\r",
+							"console.log(index);\r",
+							"\r",
+							"pm.environment.set(\"random_number\", index);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/currency",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"currency"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "curr_byn",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"    var response = {\r",
+							"    \"Cur_Abbreviation\": \"CAD\",\r",
+							"    \"Cur_ID\": 371,\r",
+							"    \"Cur_Name\": \"Канадский доллар\",\r",
+							"    \"Cur_OfficialRate\": 1.9704,\r",
+							"    \"Cur_Scale\": 1,\r",
+							"    \"Date\": \"2021-11-17T00:00:00\"\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Test json structure\", function () {\r",
+							"    pm.expect(tv4.validate(jsonData, response)).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						},
+						{
+							"key": "curr_code",
+							"value": "{{random_number}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/curr_byn",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"curr_byn"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
